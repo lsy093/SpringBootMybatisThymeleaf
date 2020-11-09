@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户列表</title>
+    <style>
+        table{border-collapse:collapse;}
+        table,th, td{border: 1px solid black;padding: 5px;text-align: center;}
+    </style>
+</head>
+<body>
+    <br/>
+    <br/>
+    <a href="/save">新增用户</a>
+    <br/>
+    <br/>
+    <table>
+        <thead>
+            <th width="20%">姓名</th>
+            <th width="20%">年龄</th>
+            <th width="20%">电话</th>
+            <th width="20%">操作</th>
+        </thead>
+        <tbody>
+            <tr th:each="users:${users}">
+				<td th:text="${users.name}"></td>
+				<td th:text="${users.age}"></td>
+				<td th:text="${users.phone}"></td>
+				<td>
+				<a th:href="@{'detail/'+${users.id}}">详情</a>
+				<a th:href="@{'update/'+${users.id}}">编辑</a>
+				<a href="javascript:void(0)" th:onclick="|return del('${users.id}')|">删除</a></td>
+			</tr>
+        </tbody>
+    </table>
+    
+    <script type="text/javascript">
+		function del(id) {
+			var flag = confirm("你确定要删除此选项吗");
+			if (flag == true) {
+				window.location.href = "delete/" + id;
+			}
+		}
+	</script>
+    
+	</body>
+</html>
