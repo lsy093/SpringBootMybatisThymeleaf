@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Document</title>
+</head>
+<body>
+  <h2>更新页面</h2>
+  <form th:action="${user.id}" method='post'>  
+  	用户名：
+	<input type="text" name="name" th:value="${user.name}">
+	年龄：
+	<input type="text" name="age" th:value="${user.age}">
+	电话：
+	<input type="text" name="phone" th:value="${user.phone}">
+	
+  <input type="submit" value="提交">
+  </form>
+</body>
+</html>
