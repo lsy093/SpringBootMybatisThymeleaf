@@ -18,6 +18,11 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
+	@RequestMapping(value = "/login")
+	public String login() {
+		return "/login";
+	}
+	
 	@RequestMapping(value = "/")
 	public String index(Model model) {
 		List<User> users = userService.userList();
