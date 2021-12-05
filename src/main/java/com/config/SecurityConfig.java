@@ -34,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	        .defaultSuccessUrl("/",true)//配置登录成功后页面
 			.failureUrl("/login?error=true")
 	        .and()
-	        .csrf().disable();
+	        .csrf().disable();//20211205提交测试
 	    }
 		
 		  @Override
