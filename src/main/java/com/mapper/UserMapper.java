@@ -15,7 +15,7 @@ public interface UserMapper {
 	
 	public User findUserById(@Param("id") int id);
 	
-	public int update(@Param("id") int id, User user);
+	public int update(User user);
 	
 	public int delete(@Param("id") int id);	
 	

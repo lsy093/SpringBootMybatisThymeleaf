@@ -27,9 +27,8 @@ public class UserService {
 		return userMapper.findUserById(id);
 	}
 
-	public int update(Integer id, User user) {
-		// TODO Auto-generated method stub
-		return userMapper.update(id, user);
+	public int update(User user) {
+		return userMapper.update(user);
 	}
 
 	public void delete(int id) {

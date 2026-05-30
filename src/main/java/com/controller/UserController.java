@@ -59,7 +59,8 @@ public class UserController {
 	
 	@RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
     public String update(@PathVariable(value = "id") int id, User user) {
-		userService.update(id, user);
+		user.setId(id);
+		userService.update(user);
         return "redirect:/";
 	}
 	
