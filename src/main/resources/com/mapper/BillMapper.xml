@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.BillMapper">
+
+    <resultMap id="BillResultMap" type="com.pojo.Bill">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="transaction_date" property="transactionDate" />
+        <result column="amount" property="amount" />
+        <result column="balance" property="balance" />
+        <result column="transaction_type" property="transactionType" />
+        <result column="remark" property="remark" />
+        <result column="source" property="source" />
+        <result column="category" property="category" />
+        <result column="bill_type" property="billType" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <insert id="save" parameterType="com.pojo.Bill">
+        INSERT INTO bill (
+            user_id, transaction_date, amount, balance,
+            transaction_type, remark, source, category, bill_type,
+            create_time, update_time
+        ) VALUES (
+            #{userId}, #{transactionDate}, #{amount}, #{balance},
+            #{transactionType}, #{remark}, #{source}, #{category}, #{billType},
+            NOW(), NOW()
+        )
+    </insert>
+
+    <insert id="batchSave">
+        INSERT INTO bill (
+            user_id, transaction_date, amount, balance,
+            transaction_type, remark, source, category, bill_type,
+            create_time, update_time
+        ) VALUES
+        <foreach collection="bills" item="bill" separator=",">
+            (
+                #{bill.userId}, #{bill.transactionDate}, #{bill.amount}, #{bill.balance},
+                #{bill.transactionType}, #{bill.remark}, #{bill.source}, #{bill.category}, #{bill.billType},
+                NOW(), NOW()
+            )
+        </foreach>
+    </insert>
+
+    <select id="findByUserId" resultMap="BillResultMap">
+        SELECT * FROM bill
+        WHERE user_id = #{userId}
+        ORDER BY transaction_date DESC
+    </select>
+
+    <select id="findByUserIdAndSource" resultMap="BillResultMap">
+        SELECT * FROM bill
+        WHERE user_id = #{userId} AND source = #{source}
+        ORDER BY transaction_date DESC
+    </select>
+
+    <select id="findById" resultMap="BillResultMap">
+        SELECT * FROM bill WHERE id = #{id}
+    </select>
+
+    <update id="update" parameterType="com.pojo.Bill">
+        UPDATE bill SET
+            user_id = #{userId},
+            transaction_date = #{transactionDate},
+            amount = #{amount},
+            balance = #{balance},
+            transaction_type = #{transactionType},
+            remark = #{remark},
+            source = #{source},
+            category = #{category},
+            bill_type = #{billType},
+            update_time = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM bill WHERE id = #{id}
+    </delete>
+
+    <select id="countByUserId" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM bill WHERE user_id = #{userId}
+    </select>
+
+</mapper>
