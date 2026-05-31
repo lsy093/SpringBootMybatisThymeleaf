@@ -1,8 +1,6 @@
 package com.mapper;
 
-import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 import com.pojo.SysUser;
 
@@ -11,6 +9,7 @@ import java.util.List;
 /**
  * 系统用户Mapper接口
  * 提供用户数据的数据库操作方法
+ * 所有SQL语句都写在对应的XML文件中，便于维护
  *
  * @author Auto Generated
  */
@@ -23,7 +22,6 @@ public interface SysUserMapper {
      * @param username 用户名
      * @return 返回用户对象，如果不存在返回null
      */
-    @Select("SELECT * FROM sys_user WHERE username = #{username}")
     SysUser findByUsername(@Param("username") String username);
 
     /**
@@ -32,7 +30,6 @@ public interface SysUserMapper {
      * @param user 用户对象
      * @return 返回影响的行数（1表示成功）
      */
-    @Insert("INSERT INTO sys_user(username, password, email) VALUES(#{username}, #{password}, #{email})")
     int save(SysUser user);
 
     /**
@@ -42,7 +39,6 @@ public interface SysUserMapper {
      * @param username 用户名
      * @return 返回该用户名的数量（0表示不存在，1表示已存在）
      */
-    @Select("SELECT COUNT(*) FROM sys_user WHERE username = #{username}")
     int countByUsername(@Param("username") String username);
 
     /**
@@ -58,7 +54,6 @@ public interface SysUserMapper {
      * @param id 用户ID
      * @return 返回用户对象，如果不存在返回null
      */
-    @Select("SELECT * FROM sys_user WHERE id = #{id}")
     SysUser findById(@Param("id") Integer id);
 
     /**
