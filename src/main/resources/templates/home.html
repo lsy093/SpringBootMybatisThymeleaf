@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能记账 - 首页</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* 头部样式 */
+        .header {
+            background: white;
+            border-radius: 16px;
+            padding: 20px 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        .header .user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header .user-info span {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .header .user-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .header .user-btn {
+            background: #f5f7fa;
+            color: #333;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .header .user-btn:hover {
+            background: #e8ecf0;
+        }
+
+        .header .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background: white;
+            min-width: 160px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            border-radius: 8px;
+            z-index: 100;
+            overflow: hidden;
+        }
+
+        .header .dropdown-content a {
+            color: #333;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-size: 14px;
+            transition: background 0.3s ease;
+        }
+
+        .header .dropdown-content a:hover {
+            background: #f5f7fa;
+        }
+
+        .header .dropdown-content a.danger {
+            color: #f44336;
+        }
+
+        .header .user-dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* 欢迎区域 */
+        .welcome-section {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .welcome-section h2 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .welcome-section p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .welcome-section .date {
+            margin-top: 16px;
+            color: #999;
+            font-size: 14px;
+        }
+
+        /* 功能卡片网格 */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-card .icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            margin: 0 auto 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+        }
+
+        .feature-card h3 {
+            color: #333;
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .feature-card p {
+            color: #999;
+            font-size: 14px;
+        }
+
+        .feature-card.income .icon {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+        }
+
+        .feature-card.expense .icon {
+            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+            color: white;
+        }
+
+        .feature-card.import .icon {
+            background: linear-gradient(135deg, #2196F3 0%, #1976d2 100%);
+            color: white;
+        }
+
+        .feature-card.statistics .icon {
+            background: linear-gradient(135deg, #FF9800 0%, #f57c00 100%);
+            color: white;
+        }
+
+        .feature-card.bill .icon {
+            background: linear-gradient(135deg, #9C27B0 0%, #7b1fa2 100%);
+            color: white;
+        }
+
+        .feature-card.user .icon {
+            background: linear-gradient(135deg, #607D8B 0%, #455a64 100%);
+            color: white;
+        }
+
+        /* 快捷操作区域 */
+        .quick-actions {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .quick-actions h3 {
+            color: #333;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .quick-actions .actions-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .quick-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .quick-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .quick-btn.primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .quick-btn.secondary {
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        .quick-btn.danger {
+            background: #ffebee;
+            color: #f44336;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .welcome-section h2 {
+                font-size: 22px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-actions .actions-row {
+                flex-direction: column;
+            }
+
+            .quick-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 头部 -->
+        <div class="header">
+            <div class="logo">
+                <div class="logo-icon">账</div>
+                <h1>智能记账</h1>
+            </div>
+            <div class="user-info">
+                <span>欢迎，<strong th:text="${currentUser}"></strong></span>
+                <div class="user-dropdown">
+                    <button class="user-btn">
+                        <span>👤</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="dropdown-content">
+                        <a href="/users">👥 用户管理</a>
+                        <a href="/users/edit/1">⚙️ 个人信息</a>
+                        <a href="/logout" class="danger">🚪 退出登录</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 欢迎区域 -->
+        <div class="welcome-section">
+            <h2>欢迎回来！</h2>
+            <p>开始管理你的财务，记录每一笔收支</p>
+            <div class="date" id="currentDate"></div>
+        </div>
+
+        <!-- 功能卡片区域 -->
+        <div class="features-grid">
+            <a href="/record/income" class="feature-card income">
+                <div class="icon">💰</div>
+                <h3>记一笔收入</h3>
+                <p>记录工资、奖金等收入</p>
+            </a>
+
+            <a href="/record/expense" class="feature-card expense">
+                <div class="icon">💸</div>
+                <h3>记一笔支出</h3>
+                <p>记录日常消费支出</p>
+            </a>
+
+            <a href="/import" class="feature-card import">
+                <div class="icon">📥</div>
+                <h3>导入账单</h3>
+                <p>支持微信、支付宝、招行CSV</p>
+            </a>
+
+            <a href="/bills" class="feature-card bill">
+                <div class="icon">📋</div>
+                <h3>查看账单</h3>
+                <p>浏览所有收支记录</p>
+            </a>
+
+            <a href="/statistics" class="feature-card statistics">
+                <div class="icon">📊</div>
+                <h3>统计报表</h3>
+                <p>分析收支趋势和分类</p>
+            </a>
+
+            <a href="/users" class="feature-card user">
+                <div class="icon">👥</div>
+                <h3>用户管理</h3>
+                <p>管理系统用户账户</p>
+            </a>
+        </div>
+
+        <!-- 快捷操作 -->
+        <div class="quick-actions">
+            <h3>快捷操作</h3>
+            <div class="actions-row">
+                <a href="/record/income" class="quick-btn primary">💰 快速记收入</a>
+                <a href="/record/expense" class="quick-btn primary">💸 快速记支出</a>
+                <a href="/import" class="quick-btn secondary">📥 导入账单</a>
+                <a href="/users" class="quick-btn secondary">👥 用户管理</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 显示当前日期
+        function showCurrentDate() {
+            const now = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+            document.getElementById('currentDate').textContent = now.toLocaleDateString('zh-CN', options);
+        }
+        showCurrentDate();
+    </script>
+</body>
+</html>
