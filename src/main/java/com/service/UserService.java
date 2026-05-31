@@ -1,39 +1,50 @@
 package com.service;
 
 import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.mapper.UserMapper;
 import com.pojo.User;
 
-@Service
-public class UserService {
-	@Autowired
-	private UserMapper userMapper;
+/**
+ * 用户服务接口
+ * 提供用户相关业务逻辑的方法定义
+ *
+ * @author Auto Generated
+ */
+public interface UserService {
 
-	public List<User> userList() {
-		return userMapper.userList();
-	}
+    /**
+     * 获取用户列表
+     *
+     * @return 用户列表
+     */
+    List<User> userList();
 
-	public void save(User user) {
-		// TODO Auto-generated method stub
-		userMapper.save(user);;
-	}
+    /**
+     * 保存用户
+     *
+     * @param user 用户对象
+     */
+    void save(User user);
 
-	public User get(Integer id) {
-		// TODO Auto-generated method stub
-		return userMapper.findUserById(id);
-	}
+    /**
+     * 根据ID获取用户
+     *
+     * @param id 用户ID
+     * @return 用户对象
+     */
+    User get(Integer id);
 
-	public int update(User user) {
-		return userMapper.update(user);
-	}
+    /**
+     * 更新用户
+     *
+     * @param user 用户对象
+     * @return 影响的行数
+     */
+    int update(User user);
 
-	public void delete(int id) {
-		// TODO Auto-generated method stub
-		userMapper.delete(id);
-	}
-
+    /**
+     * 删除用户
+     *
+     * @param id 用户ID
+     */
+    void delete(int id);
 }

@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户管理 - 智能记账</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            border-radius: 16px;
+            padding: 24px 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .header .user-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header .user-info span {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .header .logout-btn {
+            background: #f5f7fa;
+            color: #667eea;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .header .logout-btn:hover {
+            background: #e8ecf0;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header h2 {
+            color: #333;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .card-header .actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-edit {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background: #45a049;
+        }
+
+        .btn-delete {
+            background: #f44336;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #d32f2f;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 16px 24px;
+            text-align: left;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        th {
+            background: #f8f9fa;
+            color: #666;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            color: #333;
+            font-size: 14px;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-active {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .empty-state svg {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+        }
+
+        .flash-message {
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .flash-success {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #c8e6c9;
+        }
+
+        .flash-error {
+            background: #ffebee;
+            color: #c62828;
+            border: 1px solid #ffcdd2;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .modal h3 {
+            color: #333;
+            margin-bottom: 16px;
+        }
+
+        .modal p {
+            color: #666;
+            margin-bottom: 24px;
+            font-size: 14px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .btn-cancel {
+            background: #f5f7fa;
+            color: #666;
+        }
+
+        .btn-cancel:hover {
+            background: #e8ecf0;
+        }
+
+        .delete-confirm {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .card-header {
+                flex-direction: column;
+                gap: 16px;
+                align-items: flex-start;
+            }
+
+            th, td {
+                padding: 12px 16px;
+                font-size: 12px;
+            }
+
+            .actions-cell {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 成功提示 -->
+        <div th:if="${param.updated != null}" class="flash-message flash-success">
+            用户信息更新成功！
+        </div>
+        <div th:if="${param.deleted != null}" class="flash-message flash-success">
+            用户删除成功！
+        </div>
+
+        <!-- 头部 -->
+        <div class="header">
+            <h1>智能记账</h1>
+            <div class="user-info">
+                <span>当前用户: <strong th:text="${currentUser}"></strong></span>
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="logout-btn">退出登录</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- 用户列表卡片 -->
+        <div class="card">
+            <div class="card-header">
+                <h2>用户管理</h2>
+                <div class="actions">
+                    <a href="/register" class="btn btn-primary">
+                        <span>+</span> 新增用户
+                    </a>
+                </div>
+            </div>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>用户名</th>
+                            <th>邮箱</th>
+                            <th>注册时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="user : ${users}">
+                            <td th:text="${user.id}"></td>
+                            <td th:text="${user.username}"></td>
+                            <td th:text="${user.email != null ? user.email : '-'}"></td>
+                            <td th:text="${user.createTime != null ? #dates.format(user.createTime, 'yyyy-MM-dd HH:mm') : '-'}"></td>
+                            <td class="actions-cell">
+                                <a th:href="@{/users/edit/{id}(id=${user.id})}" class="btn btn-edit">编辑</a>
+                                <button class="btn btn-delete" onclick="confirmDelete(${user.id}, '${user.username}')">删除</button>
+                            </td>
+                        </tr>
+                        <tr th:if="${users == null or users.isEmpty()}">
+                            <td colspan="5" class="empty-state">
+                                <div>暂无用户数据</div>
+                                <p>点击上方按钮添加新用户</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 删除确认弹窗 -->
+    <div id="deleteModal" class="modal-overlay">
+        <div class="modal">
+            <h3>确认删除</h3>
+            <p>确定要删除用户 <strong id="deleteUsername"></strong> 吗？此操作不可撤销。</p>
+            <div class="modal-actions">
+                <button class="btn btn-cancel" onclick="closeModal()">取消</button>
+                <a id="deleteConfirmBtn" href="#" class="btn btn-delete">确认删除</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function confirmDelete(userId, username) {
+            document.getElementById('deleteUsername').textContent = username;
+            document.getElementById('deleteConfirmBtn').href = '/users/delete/' + userId;
+            document.getElementById('deleteModal').classList.add('show');
+        }
+
+        function closeModal() {
+            document.getElementById('deleteModal').classList.remove('show');
+        }
+
+        // 点击遮罩层关闭弹窗
+        document.getElementById('deleteModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>

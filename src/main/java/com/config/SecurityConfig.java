@@ -50,7 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 配置表单登录
                 .formLogin()
                 .loginPage("/login")                    // 自定义登录页面路径
-                .defaultSuccessUrl("/", true)          // 登录成功后跳转到首页
+                .defaultSuccessUrl("/home", true)          // 登录成功后跳转到首页
                 .failureUrl("/login?error=true")        // 登录失败后跳转到登录页
                 .and()
                 // 配置退出登录
