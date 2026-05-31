@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>记账系统 - 登录</title>
+    <title>记账系统 - 注册</title>
     <style>
         * {
             margin: 0;
@@ -18,7 +18,7 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
 
-        .login-container {
+        .register-container {
             display: flex;
             width: 100%;
             max-width: 1200px;
@@ -29,7 +29,7 @@
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
         }
 
-        .login-left {
+        .register-left {
             flex: 1;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             padding: 60px;
@@ -40,31 +40,31 @@
             color: white;
         }
 
-        .login-left h1 {
-            font-size: 48px;
+        .register-left h1 {
+            font-size: 42px;
             margin-bottom: 20px;
             font-weight: 700;
         }
 
-        .login-left p {
+        .register-left p {
             font-size: 18px;
             opacity: 0.9;
             text-align: center;
             line-height: 1.6;
         }
 
-        .login-left .features {
+        .register-left .benefits {
             margin-top: 40px;
         }
 
-        .login-left .feature-item {
+        .register-left .benefit-item {
             display: flex;
             align-items: center;
             margin: 15px 0;
             font-size: 16px;
         }
 
-        .login-left .feature-item::before {
+        .register-left .benefit-item::before {
             content: "✓";
             display: inline-flex;
             align-items: center;
@@ -77,7 +77,7 @@
             font-size: 12px;
         }
 
-        .login-right {
+        .register-right {
             flex: 1;
             padding: 60px;
             display: flex;
@@ -85,13 +85,13 @@
             justify-content: center;
         }
 
-        .login-right h2 {
+        .register-right h2 {
             font-size: 32px;
             color: #1a1a2e;
             margin-bottom: 10px;
         }
 
-        .login-right .subtitle {
+        .register-right .subtitle {
             color: #666;
             margin-bottom: 40px;
             font-size: 14px;
@@ -124,37 +124,13 @@
             box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
         }
 
-        .form-options {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            font-size: 14px;
+        .form-group .hint {
+            font-size: 12px;
+            color: #999;
+            margin-top: 6px;
         }
 
-        .remember-me {
-            display: flex;
-            align-items: center;
-            color: #666;
-        }
-
-        .remember-me input {
-            margin-right: 8px;
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-        }
-
-        .forgot-password {
-            color: #667eea;
-            text-decoration: none;
-        }
-
-        .forgot-password:hover {
-            text-decoration: underline;
-        }
-
-        .btn-login {
+        .btn-register {
             width: 100%;
             padding: 16px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -168,29 +144,29 @@
             box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
         }
 
-        .btn-login:hover {
+        .btn-register:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
         }
 
-        .btn-login:active {
+        .btn-register:active {
             transform: translateY(0);
         }
 
-        .register-link {
+        .login-link {
             text-align: center;
             margin-top: 30px;
             color: #666;
             font-size: 14px;
         }
 
-        .register-link a {
+        .login-link a {
             color: #667eea;
             text-decoration: none;
             font-weight: 600;
         }
 
-        .register-link a:hover {
+        .login-link a:hover {
             text-decoration: underline;
         }
 
@@ -207,84 +183,70 @@
             border: 1px solid #fecaca;
         }
 
-        .alert-success {
-            background: #f0fdf4;
-            color: #16a34a;
-            border: 1px solid #bbf7d0;
-        }
-
         @media (max-width: 768px) {
-            .login-container {
+            .register-container {
                 flex-direction: column;
                 margin: 20px;
             }
 
-            .login-left {
+            .register-left {
                 padding: 40px 20px;
             }
 
-            .login-left h1 {
+            .register-left h1 {
                 font-size: 32px;
             }
 
-            .login-right {
+            .register-right {
                 padding: 40px 20px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <div class="login-left">
-            <h1>智能记账</h1>
-            <p>专业的个人财务管理平台</p>
-            <div class="features">
-                <div class="feature-item">支持微信、支付宝、银行卡账单导入</div>
-                <div class="feature-item">自动分类，智能识别消费类型</div>
-                <div class="feature-item">详细的统计报表，清晰了解收支</div>
-                <div class="feature-item">数据安全加密，保护您的隐私</div>
+    <div class="register-container">
+        <div class="register-left">
+            <h1>开启智能记账</h1>
+            <p>加入我们，轻松管理您的财务</p>
+            <div class="benefits">
+                <div class="benefit-item">免费注册，立即使用</div>
+                <div class="benefit-item">账单导入，省时省力</div>
+                <div class="benefit-item">智能分类，自动统计</div>
+                <div class="benefit-item">数据安全，隐私保护</div>
             </div>
         </div>
-        <div class="login-right">
-            <h2>欢迎回来</h2>
-            <p class="subtitle">请登录您的账户</p>
+        <div class="register-right">
+            <h2>创建账户</h2>
+            <p class="subtitle">填写以下信息完成注册</p>
 
-            <div th:if="${param.error}" class="alert alert-error">
-                用户名或密码错误，请重新输入
+            <div th:if="${error}" class="alert alert-error" th:text="${error}">
+                用户名已存在
             </div>
 
-            <div th:if="${param.logout}" class="alert alert-success">
-                您已成功退出登录
-            </div>
-
-            <div th:if="${param.registered}" class="alert alert-success">
-                注册成功，请登录
-            </div>
-
-            <form th:action="@{/login}" method="post">
+            <form th:action="@{/register}" method="post">
                 <div class="form-group">
                     <label for="username">用户名</label>
                     <input type="text" id="username" name="username" placeholder="请输入用户名" required autofocus>
+                    <p class="hint">用户名用于登录，长度3-20个字符</p>
                 </div>
 
                 <div class="form-group">
                     <label for="password">密码</label>
                     <input type="password" id="password" name="password" placeholder="请输入密码" required>
+                    <p class="hint">密码至少6个字符</p>
                 </div>
 
-                <div class="form-options">
-                    <label class="remember-me">
-                        <input type="checkbox" name="remember-me">
-                        记住我
-                    </label>
-                    <a href="#" class="forgot-password">忘记密码？</a>
+                <div class="form-group">
+                    <label for="email">邮箱（选填）</label>
+                    <input type="email" id="email" name="email" placeholder="请输入邮箱">
+                    <p class="hint">用于找回密码和接收通知</p>
                 </div>
 
-                <button type="submit" class="btn-login">登 录</button>
+                <button type="submit" class="btn-register">注 册</button>
             </form>
 
-            <div class="register-link">
-                还没有账户？ <a th:href="@{/register}">立即注册</a>
+            <div class="login-link">
+                已有账户？ <a th:href="@{/login}">立即登录</a>
             </div>
         </div>
     </div>
