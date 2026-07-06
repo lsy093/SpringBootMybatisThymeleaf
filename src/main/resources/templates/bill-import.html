@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>账单导入 - 记账系统</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            padding: 40px;
+        }
+        
+        .card-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .card-header h1 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+        
+        .card-header p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .form-group select,
+        .form-group input[type="file"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: #fafafa;
+        }
+        
+        .form-group select:focus,
+        .form-group input[type="file"]:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+        }
+        
+        .form-group select {
+            cursor: pointer;
+        }
+        
+        .file-upload {
+            position: relative;
+            overflow: hidden;
+            border: 2px dashed #e0e0e0;
+            border-radius: 10px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .file-upload:hover {
+            border-color: #667eea;
+            background: #f5f7ff;
+        }
+        
+        .file-upload input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+        
+        .file-upload i {
+            font-size: 48px;
+            color: #667eea;
+            margin-bottom: 12px;
+        }
+        
+        .file-upload span {
+            display: block;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+        
+        .alert {
+            padding: 16px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .source-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .source-card h4 {
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .source-card p {
+            color: #666;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+        
+        .nav-bar {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .nav-bar a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            margin: 0 15px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .nav-bar a:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .badge-active {
+            background: #4caf50;
+            color: white;
+        }
+        
+        .badge-pending {
+            background: #ff9800;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav-bar">
+            <a href="/home">返回首页</a>
+            <a href="/bill/list">账单列表</a>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h1>账单导入</h1>
+                <p>支持导入招商银行、微信支付、支付宝等平台的交易记录</p>
+            </div>
+            
+            <!-- 导入结果提示 -->
+            <div th:if="${success != null}" th:class="${success} ? 'alert alert-success' : 'alert alert-error'">
+                <span th:text="${message}"></span>
+            </div>
+            
+            <!-- 可用来源说明 -->
+            <div style="margin-bottom: 25px;">
+                <h3 style="color: #333; margin-bottom: 15px; font-size: 16px;">可用导入来源</h3>
+                <div th:each="source : ${sources}">
+                    <div class="source-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h4 th:text="${source.displayName}"></h4>
+                            <span th:class="${source.sourceType == 'CMB' ? 'badge badge-active' : 'badge badge-pending'}">
+                                [[${source.sourceType == 'CMB' ? '已实现' : '开发中'}]]
+                            </span>
+                        </div>
+                        <p th:if="${source.sourceType == 'CMB'}">
+                            支持招商银行交易流水CSV格式，系统会自动解析交易日期、金额、交易类型等信息，并进行智能分类。
+                        </p>
+                        <p th:else>
+                            该功能正在开发中，敬请期待...
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <form method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="sourceType">选择导入来源</label>
+                    <select id="sourceType" name="sourceType" required>
+                        <option value="">请选择导入来源</option>
+                        <option th:each="source : ${sources}" 
+                                th:value="${source.sourceType}" 
+                                th:text="${source.displayName}"></option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>上传CSV文件</label>
+                    <div class="file-upload">
+                        <input type="file" name="file" id="file" accept=".csv" required>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="17 8 12 3 7 8"></polyline>
+                                <line x1="12" y1="3" x2="12" y2="15"></line>
+                            </svg>
+                            <span>点击或拖拽文件到此处上传</span>
+                            <span style="font-size: 12px; color: #999; margin-top: 4px;">支持 .csv 格式文件</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">开始导入</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
